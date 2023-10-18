@@ -15,17 +15,17 @@ connectDB();
 //*Set CORS
 const whiteList = [process.env.FRONTEND_URL];
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (whiteList.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("CORS error"));
-    }
-  },
-};
-app.use(cors(corsOptions));
-
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     if (!origin || whiteList.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("CORS error"));
+//     }
+//   },
+// };
+// app.use(cors(corsOptions));
+app.use(cors());
 //* Routing
 
 app.use("/api/users", userRouter);
@@ -42,10 +42,16 @@ const server = app.listen(PORT, () => {
 
 import { Server } from "socket.io";
 
+// const io = new Server(server, {
+//   pingTimeout: 60000,
+//   cors: {
+//     origin: process.env.FRONTEND_URL,
+//   },
+// });
 const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
-    origin: process.env.FRONTEND_URL,
+    origin: "*",
   },
 });
 
